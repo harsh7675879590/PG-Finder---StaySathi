@@ -1,0 +1,8 @@
+# OPTION A: Dynamic Greeting (If CallKaro supports variable injection in the First Message field)
+Hello, kya meri baat {{customer_name}} ji se ho rahi hai? Main PG Finder se StaySathi bol rahi hoon.
+
+---
+
+# OPTION B: Universal Greeting (Recommended if CallKaro doesn't support conditional logic in First Message)
+Hello, main PG Finder se StaySathi bol rahi hoon. Kya meri baat unhi se ho rahi hai jinhone PG search kiya tha?
+

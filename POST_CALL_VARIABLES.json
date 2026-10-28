@@ -1,0 +1,58 @@
+{
+  "variables": [
+    {
+      "name": "caller_name",
+      "type": "string",
+      "description": "Full name of the caller, either confirmed from metadata or explicitly collected during the call."
+    },
+    {
+      "name": "city",
+      "type": "enum",
+      "options": ["Gurgaon", "Bangalore", "Chennai", "Other"],
+      "description": "Target city where the caller is looking for PG accommodation."
+    },
+    {
+      "name": "preferred_locality",
+      "type": "string",
+      "description": "Specific neighborhood or landmark mentioned by the caller (e.g. DLF Phase 3, Koramangala, OMR, near office). Empty string if not specified."
+    },
+    {
+      "name": "gender_pg_type",
+      "type": "enum",
+      "options": ["Male", "Female", "Co-ed", "Single Room", "Sharing", "Unspecified"],
+      "description": "Gender preference or room type requested by caller."
+    },
+    {
+      "name": "monthly_budget",
+      "type": "string",
+      "description": "Expected monthly budget in INR (e.g. '12000', '15000-18000'). Standardize mentions like '15k' into '15000'."
+    },
+    {
+      "name": "move_in_date",
+      "type": "string",
+      "description": "Approximate date or timeline for shifting (e.g. 'Immediate', '1st Nov', 'Within 2 weeks')."
+    },
+    {
+      "name": "stay_duration",
+      "type": "string",
+      "description": "Duration of PG stay (e.g. '3 months', '6 months', '1 year', 'Short term')."
+    },
+    {
+      "name": "call_outcome",
+      "type": "enum",
+      "options": ["interested", "busy_callback", "wrong_number", "not_interested"],
+      "description": "Final lead qualification outcome of the call."
+    },
+    {
+      "name": "callback_time",
+      "type": "string",
+      "description": "Time requested for callback if caller was busy, or 'WhatsApp' if preferred."
+    },
+    {
+      "name": "call_summary",
+      "type": "string",
+      "description": "Concise 1-2 sentence executive summary of the caller's requirements, preferences, and next steps."
+    }
+  ]
+}
+
