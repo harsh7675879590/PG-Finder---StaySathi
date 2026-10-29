@@ -144,3 +144,4 @@ python cli_simulator.py
 - **Role:** Forward Deployed Engineer / Voice AI Engineer
 - **Technologies:** FastAPI, Python 3.12, OpenAI (`gpt-4o-mini`), Groq (`llama-3.3-70b`), WebSpeech API, Edge-TTS Neural Voice, SQLite, Pydantic, TailwindCSS.
 - **Impact:** Engineered an end-to-end Voice AI qualification system that handles missing metadata gracefully, reduces qualification time from 10 minutes to under 2 minutes per lead, and auto-populates CRM schemas with zero human manual entry.
+

@@ -59,3 +59,4 @@ def on_startup():
 @app.get("/")
 def serve_dashboard(request: Request):
     return templates.TemplateResponse("index.html", {"request": request, "project_name": settings.PROJECT_NAME})
+

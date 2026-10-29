@@ -100,3 +100,4 @@ class LLMClient:
         return "Samajh gayi! Kya aapka monthly budget around 15 hazaar ke aas-paas hai?"
 
 llm_client = LLMClient()
+

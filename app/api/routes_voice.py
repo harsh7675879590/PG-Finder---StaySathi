@@ -143,3 +143,4 @@ async def complete_call(req: CompleteCallRequest, db: Session = Depends(get_db))
         "outcome": outcome,
         "extracted_data": extracted
     }
+

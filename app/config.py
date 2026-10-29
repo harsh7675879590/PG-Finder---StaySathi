@@ -31,3 +31,4 @@ settings = Settings()
 # Ensure storage directories exist
 settings.STORAGE_DIR.mkdir(parents=True, exist_ok=True)
 settings.RECORDINGS_DIR.mkdir(parents=True, exist_ok=True)
+

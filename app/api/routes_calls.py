@@ -40,3 +40,4 @@ def get_call(call_id: int, db: Session = Depends(get_db)):
         "extracted_data": json.loads(r.extracted_data_json) if r.extracted_data_json else {},
         "created_at": r.created_at.strftime("%Y-%m-%d %H:%M:%S")
     }
+
