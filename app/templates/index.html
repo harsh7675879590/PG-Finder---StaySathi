@@ -1,0 +1,527 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PG Finder - StaySathi Voice AI Console</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+  <style>
+    .pulse-ring {
+      animation: pulse 2s infinite;
+    }
+    @keyframes pulse {
+      0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(168, 85, 247, 0.7); }
+      70% { transform: scale(1.05); box-shadow: 0 0 0 15px rgba(168, 85, 247, 0); }
+      100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(168, 85, 247, 0); }
+    }
+  </style>
+</head>
+<body class="bg-slate-950 text-slate-100 min-h-screen flex flex-col font-sans">
+
+  <!-- Top Navigation Bar -->
+  <header class="border-b border-slate-800 bg-slate-900/80 backdrop-blur sticky top-0 z-50 px-6 py-4 flex items-center justify-between">
+    <div class="flex items-center space-x-3">
+      <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-purple-600 to-indigo-500 flex items-center justify-center text-white shadow-lg shadow-purple-500/30">
+        <i class="fa-solid fa-headset text-lg"></i>
+      </div>
+      <div>
+        <h1 class="text-lg font-bold bg-clip-text text-transparent bg-gradient-to-r from-purple-400 via-pink-400 to-indigo-400">
+          PG Finder · StaySathi Voice AI
+        </h1>
+        <p class="text-xs text-slate-400">Forward Deployed Engineering Production Suite</p>
+      </div>
+    </div>
+    <div class="flex items-center space-x-4 text-xs">
+      <span class="px-2.5 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 flex items-center gap-1.5">
+        <span class="w-2 h-2 rounded-full bg-emerald-400 animate-ping"></span> Live Engine
+      </span>
+      <span class="px-2.5 py-1 rounded-full bg-purple-500/10 border border-purple-500/30 text-purple-300">
+        Voice: hi-IN-SwaraNeural
+      </span>
+    </div>
+  </header>
+
+  <!-- Navigation Tabs -->
+  <div class="bg-slate-900 border-b border-slate-800 px-6 flex space-x-6 text-sm font-medium">
+    <button onclick="switchTab('simulator')" id="tab-simulator" class="py-3 border-b-2 border-purple-500 text-purple-400 flex items-center gap-2">
+      <i class="fa-solid fa-phone-volume"></i> Voice Simulator
+    </button>
+    <button onclick="switchTab('leads')" id="tab-leads" class="py-3 border-b-2 border-transparent text-slate-400 hover:text-slate-200 flex items-center gap-2">
+      <i class="fa-solid fa-users"></i> CRM Leads
+    </button>
+    <button onclick="switchTab('calls')" id="tab-calls" class="py-3 border-b-2 border-transparent text-slate-400 hover:text-slate-200 flex items-center gap-2">
+      <i class="fa-solid fa-clock-rotate-left"></i> Call History & Intelligence
+    </button>
+  </div>
+
+  <!-- Main Content Container -->
+  <main class="flex-1 p-6 max-w-7xl mx-auto w-full">
+
+    <!-- TAB 1: VOICE SIMULATOR -->
+    <div id="view-simulator" class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+      
+      <!-- Left Column: Lead / Metadata Injector -->
+      <div class="bg-slate-900 border border-slate-800 rounded-2xl p-5 flex flex-col justify-between">
+        <div>
+          <div class="flex items-center justify-between mb-4">
+            <h2 class="text-sm font-semibold uppercase tracking-wider text-slate-400 flex items-center gap-2">
+              <i class="fa-solid fa-database text-purple-400"></i> Incoming Metadata
+            </h2>
+            <select id="quick-lead-select" onchange="loadSelectedLead(this.value)" class="bg-slate-800 border border-slate-700 text-xs rounded-lg px-2 py-1 text-slate-300">
+              <option value="">Load from CRM...</option>
+            </select>
+          </div>
+
+          <div class="space-y-3 text-xs">
+            <div>
+              <label class="block text-slate-400 mb-1">Customer Name</label>
+              <input type="text" id="meta-name" placeholder="e.g. Harsh (Leave blank to test missing)" class="w-full bg-slate-800/80 border border-slate-700 rounded-lg px-3 py-2 text-slate-100 focus:outline-none focus:border-purple-500">
+            </div>
+            <div>
+              <label class="block text-slate-400 mb-1">Phone Number</label>
+              <input type="text" id="meta-phone" placeholder="+91 98112 34567" class="w-full bg-slate-800/80 border border-slate-700 rounded-lg px-3 py-2 text-slate-100 focus:outline-none focus:border-purple-500">
+            </div>
+            <div>
+              <label class="block text-slate-400 mb-1">Target City</label>
+              <input type="text" id="meta-city" placeholder="e.g. Gurgaon (or blank)" class="w-full bg-slate-800/80 border border-slate-700 rounded-lg px-3 py-2 text-slate-100 focus:outline-none focus:border-purple-500">
+            </div>
+            <div>
+              <label class="block text-slate-400 mb-1">Gender / Preference</label>
+              <input type="text" id="meta-gender" placeholder="Male / Female / Co-ed" class="w-full bg-slate-800/80 border border-slate-700 rounded-lg px-3 py-2 text-slate-100 focus:outline-none focus:border-purple-500">
+            </div>
+            <div>
+              <label class="block text-slate-400 mb-1">Pre-filled Budget</label>
+              <input type="text" id="meta-budget" placeholder="e.g. 15000 (or blank)" class="w-full bg-slate-800/80 border border-slate-700 rounded-lg px-3 py-2 text-slate-100 focus:outline-none focus:border-purple-500">
+            </div>
+          </div>
+        </div>
+
+        <div class="mt-6 pt-4 border-t border-slate-800 flex gap-2">
+          <button onclick="clearMetadata()" class="w-1/2 py-2 rounded-lg bg-slate-800 hover:bg-slate-700 text-xs text-slate-300">
+            Clear All
+          </button>
+          <button onclick="presetHappyPath()" class="w-1/2 py-2 rounded-lg bg-purple-600/20 hover:bg-purple-600/30 text-purple-300 border border-purple-500/30 text-xs">
+            Preset: Call 1
+          </button>
+        </div>
+      </div>
+
+      <!-- Center Column: Active Call Console -->
+      <div class="lg:col-span-2 bg-slate-900 border border-slate-800 rounded-2xl flex flex-col h-[650px] overflow-hidden">
+        
+        <!-- Call Status Bar -->
+        <div class="p-4 bg-slate-900/90 border-b border-slate-800 flex items-center justify-between">
+          <div class="flex items-center gap-3">
+            <div id="call-status-indicator" class="w-3 h-3 rounded-full bg-slate-600"></div>
+            <div>
+              <div id="call-status-text" class="text-xs font-semibold text-slate-300">Ready to Dial</div>
+              <div id="call-timer" class="text-[11px] text-slate-500 font-mono">00:00</div>
+            </div>
+          </div>
+          <div class="flex items-center gap-2">
+            <button id="btn-call" onclick="startCall()" class="px-4 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-medium text-xs flex items-center gap-2 shadow-lg shadow-emerald-600/30">
+              <i class="fa-solid fa-phone"></i> Start Voice Call
+            </button>
+            <button id="btn-hangup" onclick="endCall()" disabled class="px-4 py-2 rounded-xl bg-rose-600/50 text-slate-400 font-medium text-xs flex items-center gap-2 cursor-not-allowed">
+              <i class="fa-solid fa-phone-slash"></i> Hang Up
+            </button>
+          </div>
+        </div>
+
+        <!-- Transcript Feed -->
+        <div id="transcript-feed" class="flex-1 p-4 overflow-y-auto space-y-3 bg-slate-950/40">
+          <div class="text-center text-xs text-slate-600 my-8">
+            Click <strong class="text-slate-400">"Start Voice Call"</strong> to begin conversation with StaySathi.
+          </div>
+        </div>
+
+        <!-- Microphone / Speech Input Control Bar -->
+        <div class="p-3 bg-slate-900 border-t border-slate-800 flex items-center gap-2">
+          <button id="btn-mic" onclick="toggleMicrophone()" disabled class="w-10 h-10 rounded-xl bg-slate-800 text-slate-500 flex items-center justify-center hover:bg-purple-600 hover:text-white transition">
+            <i class="fa-solid fa-microphone"></i>
+          </button>
+          <input type="text" id="manual-user-input" placeholder="Type here or speak using microphone..." onkeydown="handleInputKey(event)" disabled class="flex-1 bg-slate-800/80 border border-slate-700 rounded-xl px-4 py-2 text-xs text-slate-100 focus:outline-none focus:border-purple-500 disabled:opacity-50">
+          <button id="btn-send" onclick="sendUserTurn()" disabled class="px-4 py-2 rounded-xl bg-purple-600 hover:bg-purple-500 text-white text-xs font-medium disabled:opacity-40">
+            Send
+          </button>
+        </div>
+
+      </div>
+
+    </div>
+
+    <!-- TAB 2: CRM LEADS -->
+    <div id="view-leads" class="hidden">
+      <div class="flex items-center justify-between mb-4">
+        <h2 class="text-lg font-bold text-slate-200">PG Finder Inbound Leads</h2>
+        <button onclick="openNewLeadModal()" class="px-4 py-2 rounded-xl bg-purple-600 hover:bg-purple-500 text-white text-xs font-medium">
+          + Add New Lead
+        </button>
+      </div>
+      <div class="bg-slate-900 border border-slate-800 rounded-2xl overflow-hidden">
+        <table class="w-full text-left text-xs">
+          <thead class="bg-slate-800/60 text-slate-400 border-b border-slate-800">
+            <tr>
+              <th class="p-4">Name</th>
+              <th class="p-4">Phone</th>
+              <th class="p-4">City</th>
+              <th class="p-4">Budget</th>
+              <th class="p-4">Status</th>
+              <th class="p-4 text-right">Action</th>
+            </tr>
+          </thead>
+          <tbody id="leads-table-body" class="divide-y divide-slate-800 text-slate-300">
+            <tr><td colspan="6" class="p-4 text-center text-slate-500">Loading leads...</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- TAB 3: CALL HISTORY & EXTRACTION -->
+    <div id="view-calls" class="hidden">
+      <h2 class="text-lg font-bold text-slate-200 mb-4">Call Records & Post-Call Extraction</h2>
+      <div class="bg-slate-900 border border-slate-800 rounded-2xl overflow-hidden">
+        <table class="w-full text-left text-xs">
+          <thead class="bg-slate-800/60 text-slate-400 border-b border-slate-800">
+            <tr>
+              <th class="p-4">Call ID</th>
+              <th class="p-4">Lead Name</th>
+              <th class="p-4">Duration</th>
+              <th class="p-4">Outcome</th>
+              <th class="p-4">Extracted Summary</th>
+              <th class="p-4">Date</th>
+              <th class="p-4 text-right">Audio & Details</th>
+            </tr>
+          </thead>
+          <tbody id="calls-table-body" class="divide-y divide-slate-800 text-slate-300">
+            <tr><td colspan="7" class="p-4 text-center text-slate-500">Loading calls...</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+  </main>
+
+  <!-- Audio Player Element (Hidden) -->
+  <audio id="agent-audio-player" class="hidden"></audio>
+
+  <script>
+    let activeCall = false;
+    let callTimerInterval = null;
+    let callSeconds = 0;
+    let currentMessages = [];
+    let activeLeadId = null;
+    let recognition = null;
+
+    // Web Speech API initialization
+    if ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window) {
+      const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+      recognition = new SpeechRecognition();
+      recognition.continuous = false;
+      recognition.interimResults = false;
+      recognition.lang = 'hi-IN'; // Recognizes Indian English and Hindi
+
+      recognition.onresult = (event) => {
+        const text = event.results[0][0].transcript;
+        document.getElementById('manual-user-input').value = text;
+        sendUserTurn();
+      };
+
+      recognition.onerror = (e) => {
+        console.warn('Speech recognition error:', e);
+        document.getElementById('btn-mic').classList.remove('bg-rose-600', 'text-white');
+      };
+
+      recognition.onend = () => {
+        document.getElementById('btn-mic').classList.remove('bg-rose-600', 'text-white');
+      };
+    }
+
+    function switchTab(tab) {
+      ['simulator', 'leads', 'calls'].forEach(t => {
+        document.getElementById(`view-${t}`).classList.add('hidden');
+        document.getElementById(`tab-${t}`).classList.remove('border-purple-500', 'text-purple-400');
+        document.getElementById(`tab-${t}`).classList.add('border-transparent', 'text-slate-400');
+      });
+      document.getElementById(`view-${tab}`).classList.remove('hidden');
+      document.getElementById(`tab-${tab}`).classList.add('border-purple-500', 'text-purple-400');
+      document.getElementById(`tab-${tab}`).classList.remove('border-transparent', 'text-slate-400');
+
+      if (tab === 'leads') fetchLeads();
+      if (tab === 'calls') fetchCalls();
+    }
+
+    async function fetchLeads() {
+      try {
+        const res = await fetch('/api/leads');
+        const data = await res.json();
+        const tbody = document.getElementById('leads-table-body');
+        const select = document.getElementById('quick-lead-select');
+        
+        tbody.innerHTML = '';
+        select.innerHTML = '<option value="">Load from CRM...</option>';
+
+        data.forEach(l => {
+          select.innerHTML += `<option value="${l.id}">${l.customer_name || 'No Name'} (${l.city || 'No City'})</option>`;
+          tbody.innerHTML += `
+            <tr class="hover:bg-slate-800/40">
+              <td class="p-4 font-semibold text-slate-100">${l.customer_name || '<em class="text-slate-500">Unspecified</em>'}</td>
+              <td class="p-4 text-slate-400">${l.phone_number || '-'}</td>
+              <td class="p-4">${l.city || '<span class="text-amber-400/80">Missing</span>'}</td>
+              <td class="p-4">${l.budget ? '₹' + l.budget : '<span class="text-amber-400/80">Missing</span>'}</td>
+              <td class="p-4"><span class="px-2 py-0.5 rounded text-[11px] bg-slate-800 border border-slate-700 text-purple-300">${l.status}</span></td>
+              <td class="p-4 text-right">
+                <button onclick="launchLeadCall(${l.id})" class="px-3 py-1 bg-purple-600/30 hover:bg-purple-600/50 text-purple-300 rounded border border-purple-500/30 text-xs">
+                  Call Lead
+                </button>
+              </td>
+            </tr>
+          `;
+        });
+      } catch (err) {
+        console.error(err);
+      }
+    }
+
+    async function loadSelectedLead(leadId) {
+      if (!leadId) return;
+      activeLeadId = leadId;
+      const res = await fetch('/api/leads');
+      const leads = await res.json();
+      const lead = leads.find(l => l.id == leadId);
+      if (lead) {
+        document.getElementById('meta-name').value = lead.customer_name || '';
+        document.getElementById('meta-phone').value = lead.phone_number || '';
+        document.getElementById('meta-city').value = lead.city || '';
+        document.getElementById('meta-gender').value = lead.gender || '';
+        document.getElementById('meta-budget').value = lead.budget || '';
+      }
+    }
+
+    function launchLeadCall(leadId) {
+      switchTab('simulator');
+      loadSelectedLead(leadId);
+      setTimeout(startCall, 300);
+    }
+
+    function presetHappyPath() {
+      document.getElementById('meta-name').value = 'Harsh';
+      document.getElementById('meta-phone').value = '+91 98112 34567';
+      document.getElementById('meta-city').value = 'Gurgaon';
+      document.getElementById('meta-gender').value = '';
+      document.getElementById('meta-budget').value = '';
+    }
+
+    function clearMetadata() {
+      document.getElementById('meta-name').value = '';
+      document.getElementById('meta-phone').value = '';
+      document.getElementById('meta-city').value = '';
+      document.getElementById('meta-gender').value = '';
+      document.getElementById('meta-budget').value = '';
+      activeLeadId = null;
+    }
+
+    async function startCall() {
+      const payload = {
+        lead_id: activeLeadId,
+        customer_name: document.getElementById('meta-name').value.trim() || null,
+        phone_number: document.getElementById('meta-phone').value.trim() || null,
+        city: document.getElementById('meta-city').value.trim() || null,
+        gender: document.getElementById('meta-gender').value.trim() || null,
+        budget: document.getElementById('meta-budget').value.trim() || null
+      };
+
+      document.getElementById('btn-call').disabled = true;
+      document.getElementById('btn-call').classList.add('opacity-50');
+      document.getElementById('btn-hangup').disabled = false;
+      document.getElementById('btn-hangup').classList.remove('bg-rose-600/50', 'text-slate-400', 'cursor-not-allowed');
+      document.getElementById('btn-hangup').classList.add('bg-rose-600', 'text-white', 'hover:bg-rose-500');
+
+      document.getElementById('call-status-indicator').classList.remove('bg-slate-600');
+      document.getElementById('call-status-indicator').classList.add('bg-emerald-400', 'pulse-ring');
+      document.getElementById('call-status-text').innerText = 'Call in Progress (Connected)';
+
+      const feed = document.getElementById('transcript-feed');
+      feed.innerHTML = '';
+
+      // Start Call Timer
+      callSeconds = 0;
+      callTimerInterval = setInterval(() => {
+        callSeconds++;
+        const mins = String(Math.floor(callSeconds / 60)).padStart(2, '0');
+        const secs = String(callSeconds % 60).padStart(2, '0');
+        document.getElementById('call-timer').innerText = `${mins}:${secs}`;
+      }, 1000);
+
+      // Call Backend to Initiate
+      try {
+        const res = await fetch('/api/voice/initiate', {
+          method: 'POST',
+          headers: {'Content-Type': 'application/json'},
+          body: JSON.stringify(payload)
+        });
+        const data = await res.json();
+        currentMessages = data.messages;
+        activeCall = true;
+
+        appendMessage('StaySathi', data.first_message, 'agent');
+        playAudio(data.audio_url);
+
+        // Enable user input controls
+        document.getElementById('manual-user-input').disabled = false;
+        document.getElementById('btn-mic').disabled = false;
+        document.getElementById('btn-send').disabled = false;
+        document.getElementById('manual-user-input').focus();
+      } catch (err) {
+        console.error(err);
+        endCall();
+      }
+    }
+
+    async function sendUserTurn() {
+      const input = document.getElementById('manual-user-input');
+      const text = input.value.trim();
+      if (!text || !activeCall) return;
+
+      appendMessage('You', text, 'user');
+      input.value = '';
+      currentMessages.push({role: 'user', content: text});
+
+      try {
+        const metadata = {
+          customer_name: document.getElementById('meta-name').value,
+          city: document.getElementById('meta-city').value
+        };
+        const res = await fetch('/api/voice/turn', {
+          method: 'POST',
+          headers: {'Content-Type': 'application/json'},
+          body: JSON.stringify({messages: currentMessages, metadata: metadata})
+        });
+        const data = await res.json();
+        currentMessages.push({role: 'assistant', content: data.reply});
+        appendMessage('StaySathi', data.reply, 'agent');
+        playAudio(data.audio_url);
+      } catch (err) {
+        console.error(err);
+      }
+    }
+
+    function toggleMicrophone() {
+      if (!recognition) {
+        alert('Microphone input is supported on Chrome, Edge, and Safari.');
+        return;
+      }
+      const btn = document.getElementById('btn-mic');
+      btn.classList.add('bg-rose-600', 'text-white');
+      recognition.start();
+    }
+
+    function handleInputKey(e) {
+      if (e.key === 'Enter') sendUserTurn();
+    }
+
+    function appendMessage(sender, text, type) {
+      const feed = document.getElementById('transcript-feed');
+      const isAgent = type === 'agent';
+      const div = document.createElement('div');
+      div.className = `flex ${isAgent ? 'justify-start' : 'justify-end'} mb-2`;
+      div.innerHTML = `
+        <div class="max-w-[80%] rounded-2xl p-3 text-xs ${isAgent ? 'bg-slate-800 text-purple-100 border border-slate-700/80 rounded-tl-sm' : 'bg-purple-600 text-white rounded-tr-sm'}">
+          <div class="font-semibold text-[10px] mb-1 opacity-70">${sender}</div>
+          <div>${text}</div>
+        </div>
+      `;
+      feed.appendChild(div);
+      feed.scrollTop = feed.scrollHeight;
+    }
+
+    function playAudio(url) {
+      if (!url) return;
+      const player = document.getElementById('agent-audio-player');
+      player.src = url;
+      player.play().catch(e => console.log('Audio autoplay blocked:', e));
+    }
+
+    async function endCall() {
+      if (!activeCall) return;
+      activeCall = false;
+      clearInterval(callTimerInterval);
+
+      document.getElementById('call-status-indicator').classList.remove('bg-emerald-400', 'pulse-ring');
+      document.getElementById('call-status-indicator').classList.add('bg-slate-600');
+      document.getElementById('call-status-text').innerText = 'Call Ended. Running Post-Call Extraction...';
+
+      document.getElementById('manual-user-input').disabled = true;
+      document.getElementById('btn-mic').disabled = true;
+      document.getElementById('btn-send').disabled = true;
+      document.getElementById('btn-hangup').disabled = true;
+      document.getElementById('btn-call').disabled = false;
+      document.getElementById('btn-call').classList.remove('opacity-50');
+
+      // Trigger post-call extraction
+      try {
+        const metadata = {
+          customer_name: document.getElementById('meta-name').value,
+          city: document.getElementById('meta-city').value,
+          budget: document.getElementById('meta-budget').value
+        };
+        const res = await fetch('/api/voice/complete', {
+          method: 'POST',
+          headers: {'Content-Type': 'application/json'},
+          body: JSON.stringify({
+            lead_id: activeLeadId,
+            transcript: currentMessages,
+            duration_seconds: callSeconds,
+            metadata: metadata
+          })
+        });
+        const data = await res.json();
+        document.getElementById('call-status-text').innerText = `Extraction Completed: ${data.outcome.toUpperCase()}`;
+        appendMessage('System', `Post-call intelligence extracted: ${data.extracted_data.call_summary}`, 'agent');
+      } catch (err) {
+        console.error(err);
+      }
+    }
+
+    async function fetchCalls() {
+      try {
+        const res = await fetch('/api/calls');
+        const data = await res.json();
+        const tbody = document.getElementById('calls-table-body');
+        tbody.innerHTML = '';
+
+        data.forEach(c => {
+          const outcomeColor = c.call_outcome === 'interested' ? 'text-emerald-400 bg-emerald-500/10 border-emerald-500/30' : 'text-amber-400 bg-amber-500/10 border-amber-500/30';
+          tbody.innerHTML += `
+            <tr class="hover:bg-slate-800/40">
+              <td class="p-4 font-mono text-purple-400">#${c.id}</td>
+              <td class="p-4 font-semibold text-slate-100">${c.lead_name}</td>
+              <td class="p-4">${c.duration_seconds}s</td>
+              <td class="p-4"><span class="px-2 py-0.5 rounded text-[11px] border ${outcomeColor}">${c.call_outcome}</span></td>
+              <td class="p-4 text-slate-300 max-w-xs truncate">${c.extracted_data.call_summary || '-'}</td>
+              <td class="p-4 text-slate-500">${c.created_at}</td>
+              <td class="p-4 text-right">
+                <button onclick="viewCallDetails(${c.id})" class="px-3 py-1 bg-slate-800 hover:bg-slate-700 text-slate-300 rounded text-xs border border-slate-700">
+                  Inspect JSON
+                </button>
+              </td>
+            </tr>
+          `;
+        });
+      } catch (err) {
+        console.error(err);
+      }
+    }
+
+    async function viewCallDetails(callId) {
+      const res = await fetch(`/api/calls/${callId}`);
+      const data = await res.json();
+      alert(`Extracted CRM JSON for Call #${callId}:\n\n` + JSON.stringify(data.extracted_data, null, 2));
+    }
+
+    // Load initial leads on startup
+    fetchLeads();
+  </script>
+</body>
+</html>
